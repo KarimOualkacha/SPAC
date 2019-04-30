@@ -90,7 +90,7 @@ SPAC allows also for primary-secondary dependence modelling using five copulas
 In order to run any of the examples below, the package needs to be installed and loaded first, of course:
 <<load.pkg>>=
 library(devtools)
-devtools::install()
+install_github("KarimOualkacha/SPAC")
 # devtools::install_github('KarimOualkacha/SPAC', build_vignettes = TRUE)
 devtools::load_all()
 library(SPAC)

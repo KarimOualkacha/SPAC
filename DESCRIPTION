@@ -1,0 +1,29 @@
+Package: SPAC
+Type: Package
+Title: A flexible copula-based approach for the analysis of secondary phenotypes in ascertained samples
+Version: 0.0.1
+Authors@R: c(person("Karim", "Oualkacha", email =
+             "oualkacha.karim@uqam.ca", role = c("aut", "cre")),
+             person("Geneviève", "Lefebvre", email =
+             "lefebvre.gen@uqam.ca", role = "aut"),
+             person("Fodé", "Tounkara", email =
+             "tounkara@lunenfeld.ca", role = "aut"),
+             person("Celia M.T.", "Greenwood", email =
+             "celia.greenwood@mcgill.ca", role = "aut")
+             )
+Author: Karim Oualkacha [aut, cre],
+  Geneviève Lefebvre [aut],
+  Fodé Tounkara [aut],
+  Celia M.T. Greenwood [aut]
+Maintainer: Karim Oualkacha <oualkacha.karim@uqam.ca>
+Description: This is a unified copula-based framework which tests for secondary phenotypes association and a single SNP in presence of selection bias. The method fits both retrospective and prosepctive likelihoods to handel selection bias under case-contro (CC), extreme-trait (ET) and mulitple-trait (MT) sampling designs. The dependence between primary and secondary phenotypes is modelled via copulas. Thus, SPAC is a robust method for non-normality assumptiom of the secondary trait.
+Depends: R (>= 3.2.2), MASS, LaplacesDemon, VineCopula, copula
+Imports: MASS, CompQuadForm, Matrix, mvtnorm, mnormt, numDeriv, VineCopula, copula
+Suggests: knitr, methods
+License: GPL (>=3)
+Copyright: Karim Oualkacha
+Encoding: UTF-8
+LazyData: true
+VignetteBuilder: knitr
+RoxygenNote: 6.1.1
+NeedsCompilation: no

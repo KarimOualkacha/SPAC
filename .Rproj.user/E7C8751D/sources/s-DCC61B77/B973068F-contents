@@ -1,0 +1,448 @@
+getwd()
+devtools::document()
+devtools::install()
+library(SPAC)
+SPAC()
+SPAC
+load(data)
+load(data.Rdata)
+load("data.Rdata")
+load("~/Dropbox/SPAC/data/data.RData")
+SPAC
+function (y1 = y1cc, y2 = y2cc, G = markerCC, link = "probit", copfit = "Gaussian",
+method = "pros", Design = "CC")
+))))
+SPAC(y1 = y1cc, y2 = y2cc, G = markerCC, link = "probit", copfit = "Gaussian",
+method = "pros", Design = "CC")
+SPAC(y1 = y1cc, y2 = y2cc, G = markerCC, covariates = cov.matCC, link = "probit", copfit = "Gaussian",
+method = "pros", Design = "CC")
+SPAC(y1 = y1cc, y2 = y2cc, G = markerCC, covariates = as.matrix(cov.matCC), link = "probit", copfit = "Gaussian",
+method = "pros", Design = "CC")
+SPAC(y1 = y1cc, y2 = y2cc, G = markerCC, covariates = as.matrix(cov.matCC), link = "probit", copfit = "Gaussian",
+method = "pros", Design = "CC", prev = 0.1)
+library(Matrix)
+library(mnormt)
+SPAC(y1 = y1cc, y2 = y2cc, G = markerCC, covariates = as.matrix(cov.matCC), link = "probit", copfit = "Gaussian",
+method = "pros", Design = "CC", prev = 0.1)
+library(MASS)
+SPAC(y1 = y1cc, y2 = y2cc, G = markerCC, covariates = as.matrix(cov.matCC), link = "probit", copfit = "Gaussian",
+method = "pros", Design = "CC", prev = 0.1)
+SPAC
+devtools::install()
+devtools::install()
+devtools::install()
+library(SPAC)
+load(data.Rdata)
+load("data.Rdata")
+getwd()
+load("~/Dropbox/SPAC/data/data.RData")
+library(MASS)
+SPAC(y1 = y1cc, y2 = y2cc, G = markerCC, covariates = as.matrix(cov.matCC), link = "probit", copfit = "Gaussian",
+method = "pros", Design = "CC", prev = 0.1)
+outfit = gwas_cop_cc_snps(y1=y1cc, y2=y2cc, marker=markerCC, covar=as.matrix(cov.matCC), link="probit", cop="Gaussian", lik="pros")
+source("functionsSPAC.R")
+source("~/SPAC/functionsSPAC.R")
+source("~/SPAC/R/functionsSPAC.R")
+source("/Users/KOualkachaUQAM/Dropbox/SPAC/R/functionsSPAC.R")
+outfit = gwas_cop_cc_snps(y1=y1cc, y2=y2cc, marker=markerCC, covar=as.matrix(cov.matCC), link="probit", cop="Gaussian", lik="pros")
+outfit = gwas_cop_cc_snps(y1=y1cc, y2=y2cc, marker=markerCC, covar=as.matrix(cov.matCC), link="probit", cop="Clayton", lik="pros")
+setwd("~/Dropbox/Etudiants/Fode/KO-CCETMT4FT/Codes")
+source("SPA_LCcopST_cc_samples-KO-6.R")
+outfit = gwas_cop_cc_snps(y1=y1cc, y2=y2cc, marker=markerCC, covar=as.matrix(cov.matCC), link="probit", cop="Clayton", lik="pros")
+source("copulatools-v1.R")
+library(VineCopula)
+library(numDeriv)
+library(mnormt)
+library(LaplacesDemon)
+library(Matrix)
+simCop<-function(N,alpha,cop,par2=0){
+#input:
+# N: number of observation
+# alpha: dependance parameter
+# cop: copula familly: Gaussian, Student, Frank, Clayton
+#output:
+# matrix N*2,
+if(cop=="Gaussian"){
+p.cop = normalCopula(param=alpha, dim=2)
+u.alpha = rCopula(N,p.cop)
+}
+if(cop=="Student"){
+p.cop = tCopula(param=alpha, dim=2, df=par2)
+u.alpha = rCopula(N,p.cop)
+}
+if(cop=="Clayton"){
+p.cop =archmCopula(family="clayton", dim=2, param=alpha)
+u.alpha = rCopula(N,p.cop)
+}
+if(cop=="Frank"){
+p.cop = archmCopula(family="frank", dim=2, param=alpha)
+u.alpha = rCopula(N,p.cop)
+}
+if(cop=="Gumbel"){
+p.cop = archmCopula(family="gumbel", dim=2, param=alpha+1)
+u.alpha = rCopula(N,p.cop)
+}
+if(cop=="Joe"){
+p.cop = archmCopula(family="joe", dim=2, param=alpha+1)
+u.alpha = rCopula(N,p.cop)
+}
+u.alpha
+}
+##########################---------------  Simulation -----------------------##############################
+# Set up the simula lation
+pool.size=100000       # population size
+spl.size=1000          # sample size
+maf=0.3     # minor allel frequency
+# SNP/Y1 effect
+beta10=0
+beta11=0.15
+# SNP/Y2 effect
+beta20=0
+beta21=0
+# correlation
+tau=0.3
+#rho=0.4
+par2=10
+copspl="Student"
+copfit="Clayton"
+Sim=10000     # number of replications
+gene=rbinom(n=pool.size, size=2, prob=maf)
+mu1<-beta10 + beta11*gene
+mu2<-beta20 + beta21*gene
+sigma1=sigma2=1
+#   y2 <- rnorm(pool.size, mu2, sigma2);
+#   mu1star<-mu1+sigma1/sigma2*rho*(y2-mu2)
+#   y1 <- rnorm(pool.size,mu1star,sigma1*sqrt((1-rho^2)));
+## dependence induced through copula
+alpha=copKT2Par(tau=tau,cop=copspl)
+if (copspl == "Student") par2 = 10
+u.alpha=simCop(N=pool.size,alpha=alpha,cop=copspl,par2=par2)
+e.1=qnorm(u.alpha[,1])
+#-------y2 with marginal normal --------------#
+#e.2=qnorm(u.alpha[,2])
+#-------y2 with marginal Student--------------#
+df2=3
+sigma2=1
+sigma22<-sqrt( sigma2^2*(df2-2)/df2 )
+e.2=qst(u.alpha[,2],sigma=sigma22,nu=df2)
+#---------------------------------------------#
+y1<-beta10 + beta11*gene + e.1
+y2<-beta20 + beta21*gene + e.2
+dat.mat.pool=as.data.frame(cbind(y1=y1,y2=y2,marker=gene))
+#############################################
+###  MT sample from the population
+#############################################
+yub<- quantile(y1,probs=0.9)
+ylb<- quantile(y1,probs=0.1)
+y2ub1 <- quantile(y2,probs=0.65)
+#----------------------------------#
+## case pop for CC and ET
+ind.case<-which(y1>yub)
+case.pool<-dat.mat.pool[ind.case,]
+## case sample for CC and ET
+case.spl<-case.pool[sample(nrow(case.pool),spl.size/2),]
+#----------------------------------#
+## case pop for MT
+ind.af<-which(y1>yub & y2>y2ub1)
+af.pool<-dat.mat.pool[ind.af,]
+## case sample for MT
+af.spl<-af.pool[sample(nrow(af.pool),spl.size/2),]
+#----------------------------------#
+## control pop for CC and MT
+ind.con<-which(y1<yub)
+con.pool<-dat.mat.pool[ind.con,]
+## control sample for CC and MT
+con.spl<-con.pool[sample(nrow(con.pool),spl.size/2),]
+## control pop for ET
+ind.con.ET<-which(y1<ylb)
+con.ET.pool<-dat.mat.pool[ind.con.ET,]
+## control sample for ET
+con.ET.spl<-con.ET.pool[sample(nrow(con.ET.pool),spl.size/2),]
+#----------------------------------#
+mt.spl<-rbind(af.spl,con.spl)
+cc.spl<-rbind(case.spl,con.spl)
+et.spl<-rbind(case.spl,con.ET.spl)
+# MT sample
+y1mt=c(rep(1,spl.size/2),rep(0,spl.size/2) )
+y2mt=mt.spl[,2]
+markermt=mt.spl[,3]
+# CC sample
+y1cc=c(rep(1,spl.size/2),rep(0,spl.size/2) )
+y2cc=cc.spl[,2]
+markerCC=cc.spl[,3]
+# ET sample
+y1et=et.spl[,1]
+y2et=et.spl[,2]
+markeret=et.spl[,3]
+source("copulatools-v1.R")
+if (copspl == "Student") par2 = 10
+u.alpha=simCop(N=pool.size,alpha=alpha,cop=copspl,par2=par2)
+library(copula)
+u.alpha=simCop(N=pool.size,alpha=alpha,cop=copspl,par2=par2)
+u.alpha=simCop(N=pool.size,alpha=alpha,cop=copspl,par2=par2)
+gene=rbinom(n=pool.size, size=2, prob=maf)
+mu1<-beta10 + beta11*gene
+mu2<-beta20 + beta21*gene
+sigma1=sigma2=1
+#   y2 <- rnorm(pool.size, mu2, sigma2);
+#   mu1star<-mu1+sigma1/sigma2*rho*(y2-mu2)
+#   y1 <- rnorm(pool.size,mu1star,sigma1*sqrt((1-rho^2)));
+## dependence induced through copula
+alpha=copKT2Par(tau=tau,cop=copspl)
+if (copspl == "Student") par2 = 10
+u.alpha=simCop(N=pool.size,alpha=alpha,cop=copspl,par2=par2)
+e.1=qnorm(u.alpha[,1])
+#-------y2 with marginal normal --------------#
+#e.2=qnorm(u.alpha[,2])
+#-------y2 with marginal Student--------------#
+df2=3
+sigma2=1
+sigma22<-sqrt( sigma2^2*(df2-2)/df2 )
+e.2=qst(u.alpha[,2],sigma=sigma22,nu=df2)
+#---------------------------------------------#
+y1<-beta10 + beta11*gene + e.1
+y2<-beta20 + beta21*gene + e.2
+dat.mat.pool=as.data.frame(cbind(y1=y1,y2=y2,marker=gene))
+#############################################
+###  MT sample from the population
+#############################################
+yub<- quantile(y1,probs=0.9)
+ylb<- quantile(y1,probs=0.1)
+y2ub1 <- quantile(y2,probs=0.65)
+#----------------------------------#
+## case pop for CC and ET
+ind.case<-which(y1>yub)
+case.pool<-dat.mat.pool[ind.case,]
+## case sample for CC and ET
+case.spl<-case.pool[sample(nrow(case.pool),spl.size/2),]
+#----------------------------------#
+## case pop for MT
+ind.af<-which(y1>yub & y2>y2ub1)
+af.pool<-dat.mat.pool[ind.af,]
+## case sample for MT
+af.spl<-af.pool[sample(nrow(af.pool),spl.size/2),]
+#----------------------------------#
+## control pop for CC and MT
+ind.con<-which(y1<yub)
+con.pool<-dat.mat.pool[ind.con,]
+## control sample for CC and MT
+con.spl<-con.pool[sample(nrow(con.pool),spl.size/2),]
+## control pop for ET
+ind.con.ET<-which(y1<ylb)
+con.ET.pool<-dat.mat.pool[ind.con.ET,]
+## control sample for ET
+con.ET.spl<-con.ET.pool[sample(nrow(con.ET.pool),spl.size/2),]
+#----------------------------------#
+mt.spl<-rbind(af.spl,con.spl)
+cc.spl<-rbind(case.spl,con.spl)
+et.spl<-rbind(case.spl,con.ET.spl)
+# MT sample
+y1mt=c(rep(1,spl.size/2),rep(0,spl.size/2) )
+y2mt=mt.spl[,2]
+markermt=mt.spl[,3]
+# CC sample
+y1cc=c(rep(1,spl.size/2),rep(0,spl.size/2) )
+y2cc=cc.spl[,2]
+markerCC=cc.spl[,3]
+# ET sample
+y1et=et.spl[,1]
+y2et=et.spl[,2]
+markeret=et.spl[,3]
+resLCCop.KO=gwas_cop_cc_snps(y1=y1cc,y2=y2cc,marker=markerCC,covar=NULL, link="probit", cop=copfit, lik="retros")  # Latent classe Copula
+devtools::install()
+library(SPAC)
+library(MASS)
+library(copula)
+library(VineCopula)
+library(numDeriv)
+library(mnormt)
+library(LaplacesDemon)
+library(Matrix)
+source("copulatools-v1.R")
+source("~/SecondPheno/copulatools-v1.R")
+source("/Users/KOualkachaUQAM/Dropbox/Etudiants/Fode/KO-CCETMT4FT/Codes/copulatools-v1.R")
+simCop<-function(N,alpha,cop,par2=0){
+#input:
+# N: number of observation
+# alpha: dependance parameter
+# cop: copula familly: Gaussian, Student, Frank, Clayton
+#output:
+# matrix N*2,
+if(cop=="Gaussian"){
+p.cop = normalCopula(param=alpha, dim=2)
+u.alpha = rCopula(N,p.cop)
+}
+if(cop=="Student"){
+p.cop = tCopula(param=alpha, dim=2, df=par2)
+u.alpha = rCopula(N,p.cop)
+}
+if(cop=="Clayton"){
+p.cop =archmCopula(family="clayton", dim=2, param=alpha)
+u.alpha = rCopula(N,p.cop)
+}
+if(cop=="Frank"){
+p.cop = archmCopula(family="frank", dim=2, param=alpha)
+u.alpha = rCopula(N,p.cop)
+}
+if(cop=="Gumbel"){
+p.cop = archmCopula(family="gumbel", dim=2, param=alpha+1)
+u.alpha = rCopula(N,p.cop)
+}
+if(cop=="Joe"){
+p.cop = archmCopula(family="joe", dim=2, param=alpha+1)
+u.alpha = rCopula(N,p.cop)
+}
+u.alpha
+}
+##########################---------------  Simulation -----------------------##############################
+# Set up the simula lation
+pool.size=100000       # population size
+spl.size=1000          # sample size
+maf=0.3     # minor allel frequency
+# SNP/Y1 effect
+beta10=0
+beta11=0.15
+# SNP/Y2 effect
+beta20=0
+beta21=0
+# correlation
+tau=0.3
+#rho=0.4
+par2=10
+copspl="Student"
+copfit="Clayton"
+gene=rbinom(n=pool.size, size=2, prob=maf)
+mu1<-beta10 + beta11*gene
+mu2<-beta20 + beta21*gene
+sigma1=sigma2=1
+#   y2 <- rnorm(pool.size, mu2, sigma2);
+#   mu1star<-mu1+sigma1/sigma2*rho*(y2-mu2)
+#   y1 <- rnorm(pool.size,mu1star,sigma1*sqrt((1-rho^2)));
+## dependence induced through copula
+alpha=copKT2Par(tau=tau,cop=copspl)
+if (copspl == "Student") par2 = 10
+u.alpha=simCop(N=pool.size,alpha=alpha,cop=copspl,par2=par2)
+e.1=qnorm(u.alpha[,1])
+#-------y2 with marginal normal --------------#
+#e.2=qnorm(u.alpha[,2])
+#-------y2 with marginal Student--------------#
+df2=3
+sigma2=1
+sigma22<-sqrt( sigma2^2*(df2-2)/df2 )
+e.2=qst(u.alpha[,2],sigma=sigma22,nu=df2)
+#---------------------------------------------#
+y1<-beta10 + beta11*gene + e.1
+y2<-beta20 + beta21*gene + e.2
+dat.mat.pool=as.data.frame(cbind(y1=y1,y2=y2,marker=gene))
+#############################################
+###  MT sample from the population
+#############################################
+yub<- quantile(y1,probs=0.9)
+ylb<- quantile(y1,probs=0.1)
+y2ub1 <- quantile(y2,probs=0.65)
+#----------------------------------#
+## case pop for CC and ET
+ind.case<-which(y1>yub)
+case.pool<-dat.mat.pool[ind.case,]
+## case sample for CC and ET
+case.spl<-case.pool[sample(nrow(case.pool),spl.size/2),]
+#----------------------------------#
+## case pop for MT
+ind.af<-which(y1>yub & y2>y2ub1)
+af.pool<-dat.mat.pool[ind.af,]
+## case sample for MT
+af.spl<-af.pool[sample(nrow(af.pool),spl.size/2),]
+#----------------------------------#
+## control pop for CC and MT
+ind.con<-which(y1<yub)
+con.pool<-dat.mat.pool[ind.con,]
+## control sample for CC and MT
+con.spl<-con.pool[sample(nrow(con.pool),spl.size/2),]
+## control pop for ET
+ind.con.ET<-which(y1<ylb)
+con.ET.pool<-dat.mat.pool[ind.con.ET,]
+## control sample for ET
+con.ET.spl<-con.ET.pool[sample(nrow(con.ET.pool),spl.size/2),]
+#----------------------------------#
+mt.spl<-rbind(af.spl,con.spl)
+cc.spl<-rbind(case.spl,con.spl)
+et.spl<-rbind(case.spl,con.ET.spl)
+# MT sample
+y1mt=c(rep(1,spl.size/2),rep(0,spl.size/2) )
+y2mt=mt.spl[,2]
+markermt=mt.spl[,3]
+# CC sample
+y1cc=c(rep(1,spl.size/2),rep(0,spl.size/2) )
+y2cc=cc.spl[,2]
+markerCC=cc.spl[,3]
+# ET sample
+y1et=et.spl[,1]
+y2et=et.spl[,2]
+markeret=et.spl[,3]
+resLCCop.KO=gwas_cop_cc_snps(y1=y1cc,y2=y2cc,marker=markerCC,covar=NULL, link="probit", cop=copfit, lik="retros")  # Latent classe Copula
+SPAC(y1 = y1cc, y2 = y2cc, G = markerCC, covariates = as.matrix(cov.matCC), link = "probit", copfit = "Gaussian",
+method = "pros", Design = "CC", prev = 0.1)
+library(SPAC)
+library(MASS)
+library(copula)
+library(VineCopula)
+library(numDeriv)
+library(mnormt)
+library(LaplacesDemon)
+library(Matrix)
+load("~/Dropbox/SPAC/data/data.RData")
+SPAC(y1 = y1cc, y2 = y2cc, G = markerCC, link = "probit", copfit = "Gaussian", method = "pros", Design = "CC")
+SPAC(y1 = y1cc, y2 = y2cc, G = markerCC, covariates = as.matrix(cov.matCC), link = "probit", copfit = "Gaussian", method = "pros", Design = "CC", prev = 0.1)
+library(SPAC)
+load("~/Dropbox/SPAC/data/data.RData")
+SPAC(y1 = y1cc, y2 = y2cc, G = markerCC, covariates = as.matrix(cov.matCC), link = "probit", copfit = "Gaussian", method = "pros", Design = "CC", prev = 0.1)
+devtools::install()
+devtools::install()
+devtools::install()
+library(SPAC)
+load("~/Dropbox/SPAC/data/data.RData")
+SPAC(y1 = y1cc, y2 = y2cc, G = markerCC, covariates = as.matrix(cov.matCC), link = "probit", copfit = "Gaussian", method = "pros", Design = "CC", prev = 0.1)
+devtools::install()
+library(SPAC)
+SPAC(y1 = y1cc, y2 = y2cc, G = markerCC, covariates = as.matrix(cov.matCC), link = "probit", copfit = "Gaussian", method = "pros", Design = "CC", prev = 0.1)
+devtools::install()
+library(SPAC)
+SPAC(y1 = y1cc, y2 = y2cc, G = markerCC, covariates = as.matrix(cov.matCC), link = "probit", copfit = "Gaussian", method = "pros", Design = "CC", prev = 0.1)
+devtools::install()
+library(SPAC)
+load("~/Dropbox/SPAC/data/data.RData")
+SPAC(y1 = y1cc, y2 = y2cc, G = markerCC, covariates = as.matrix(cov.matCC), link = "probit", copfit = "Gaussian", method = "pros", Design = "CC", prev = 0.1)
+devtools::install()
+library(SPAC)
+load("~/Dropbox/SPAC/data/data.RData")
+SPAC(y1 = y1cc, y2 = y2cc, G = markerCC, covariates = as.matrix(cov.matCC), link = "probit", copfit = "Gaussian", method = "pros", Design = "CC", prev = 0.1)
+library(MASS)
+library(copula)
+library(VineCopula)
+library(LaplacesDemon)
+SPAC(y1 = y1cc, y2 = y2cc, G = markerCC, covariates = as.matrix(cov.matCC), link = "probit", copfit = "Gaussian", method = "pros", Design = "CC", prev = 0.1)
+devtools::install()
+library(SPAC)
+SPAC(y1 = y1cc, y2 = y2cc, G = markerCC, covariates = as.matrix(cov.matCC), link = "probit", copfit = "Gaussian",
+method = "pros", Design = "CC", prev = 0.1)
+system.file("data.Rdata",package="SPAC")
+test = system.file("data.Rdata",package="SPAC")
+load(test)
+test = system.file("data.RData",package="SPAC")
+load(test)
+load("~/Dropbox/SPAC/data/data.RData")
+str(data)
+str(data.RData)
+ls()
+getwd()
+setwd("/Users/KOualkachaUQAM/Dropbox/SPAC/data")
+save(y1cc,file="y1cc.dat")
+data.file <- system.file("data","data.RData",
+package="SPAC")
+data.file
+load(data.file)
+data.file <- system.file("data","y1cc.dat",package="SPAC")
+read.table(data.file, header=FALSE)
+load("~/Dropbox/SPAC/data/data.RData")
+load("~/Dropbox/SPAC/data/data.RData")
+read.table(data.file, header=FALSE)

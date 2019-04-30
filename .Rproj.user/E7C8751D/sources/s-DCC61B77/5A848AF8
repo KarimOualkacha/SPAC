@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1556510365207.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2251488509",
+    "id" : "5A848AF8",
+    "lastKnownWriteTime" : 1556593937,
+    "last_content_update" : 1556593937658,
+    "path" : "~/Dropbox/SPAC/vignette.Rnw",
+    "project_path" : "vignette.Rnw",
+    "properties" : {
+        "cursorPosition" : "229,29",
+        "scrollLine" : "216",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "sweave"
+}

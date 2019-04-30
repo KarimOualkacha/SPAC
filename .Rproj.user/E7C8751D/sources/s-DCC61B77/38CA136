@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1556589198827.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "38CA136",
+    "lastKnownWriteTime" : 1556490457,
+    "last_content_update" : 1556490457,
+    "path" : "~/Dropbox/SPAC/R/mainSPAC.R",
+    "project_path" : "R/mainSPAC.R",
+    "properties" : {
+        "cursorPosition" : "78,1",
+        "scrollLine" : "68"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

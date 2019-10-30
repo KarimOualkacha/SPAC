@@ -127,7 +127,8 @@ SPAC <- function(y1=NULL, y2=NULL,
            results
          },
          CC={
-           outfit = gwas_cop_cc_snps(y1=y1, y2=y2, marker=G, covar=covariates, link=link, cop=copfit, lik=method)
+           outfit = gwas_cop_cc_snps(y1=y1, y2=y2, marker=G, covar=covariates, link=link, cop=copfit, 
+                    lik=method, prev = prev)
 
                       results <- list(intercept.SNP.SecP = c(outfit$b02, outfit$se02),
                            SNP.SecP = c(outfit$b12,outfit$se2), 

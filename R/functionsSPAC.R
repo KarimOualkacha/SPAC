@@ -623,7 +623,7 @@ meanOfY1.KO<-function(eta, link=c("probit","logit","cloglog") )
 
 ### This function implement the log-likelihood
 
-cop.negloglik.cc.spl<-function(pars,y1,y2,marker,covar, link, cop, lik){
+cop.negloglik.cc.spl<-function(pars,y1,y2,marker,covar, link, cop, lik, prev){
 
   ### *** inputs ***
   ###
@@ -734,7 +734,7 @@ cop.negloglik.cc.spl<-function(pars,y1,y2,marker,covar, link, cop, lik){
   } else if(lik=="pros") {
 
     # 11/02/2019: set the prev to its true value, and omit the lines 152-->157
-    prev <- 0.1
+    #prev <- 0.1
     #g<-0:2
     #Pg<-c((1-maf)^2,2*maf*(1-maf),maf^2)
     #mu0g <- meanOfY1.KO(eta=(yc-(beta.10+g*beta.1gc[1])),link=link)
@@ -774,7 +774,7 @@ cop.negloglik.cc.spl<-function(pars,y1,y2,marker,covar, link, cop, lik){
 
 cop.fit.cc.spl<-function(y1, y2, marker, covar, link=c("probit","logit","cloglog"),
                          cop=c("Gaussian","Student","Clayton","Gumbel","Frank","Joe"),
-                         lik=c("naive","retros","pros")){
+                         lik=c("naive","retros","pros"), prev){
   ### *** inputs ***
   ###  y1,y2 : vector of primary (y1) and  secondary (y2) traits values
   ###  marker : vector of genotype value  : {0,1,2,NA}
@@ -901,14 +901,14 @@ cop.fit.cc.spl<-function(y1, y2, marker, covar, link=c("probit","logit","cloglog
     if(cop=="Student"){
       pars.init<- c(alpha.init,log.sigma.y2.init, beta1.init, beta2.init, df2.init, lglgc.maf.init, par2.init);
       outoptim<- try(optim(pars.init, cop.negloglik.cc.spl,
-                           y1=y1, y2=y2, marker=marker, covar=covar, link=link,  cop=cop, lik=lik,
+                           y1=y1, y2=y2, marker=marker, covar=covar, link=link,  cop=cop, lik=lik, prev =prev,
                            method = "L-BFGS-B", lower=c(lower.par.cop,-Inf,rep(-Inf,2*(m+1)),3,-Inf,3), upper=c(upper.par.cop,Inf,rep(Inf,2*(m+1)),Inf,Inf,Inf),
                            hessian=T),TRUE);
     }
     if(cop!="Student"){
       pars.init<- c(alpha.init,log.sigma.y2.init, beta1.init, beta2.init, df2.init, lglgc.maf.init);
       outoptim<- try(optim(pars.init, cop.negloglik.cc.spl,
-                           y1=y1, y2=y2, marker=marker, covar=covar, link=link, cop=cop, lik=lik,
+                           y1=y1, y2=y2, marker=marker, covar=covar, link=link, cop=cop, lik=lik, prev = prev,
                            method = "L-BFGS-B", lower=c(lower.par.cop,-Inf,-3,rep(-Inf,2*m +1),3,-Inf), upper=c(upper.par.cop,Inf,3,rep(Inf,2*m +1),Inf,Inf), # domaine of intercept of y1 has limited to (-3,3)
                            hessian=T),TRUE);
     }
@@ -979,11 +979,11 @@ cop.fit.cc.spl<-function(y1, y2, marker, covar, link=c("probit","logit","cloglog
 #---------------------------------------------------------------------------------#
 #                                                                                 #
 #---------------------------------------------------------------------------------#
-gwas_cop_cc_snps<-function(y1,y2,marker,covar, link, cop, lik){
+gwas_cop_cc_snps<-function(y1,y2,marker,covar, link, cop, lik, prev){
 
 
   outfit<-cop.fit.cc.spl(y1=y1,y2=y2,marker=marker,covar=covar,
-                         link=link,  cop=cop, lik=lik)
+                         link=link,  cop=cop, lik=lik, prev = prev)
 
   res<-list(dep = outfit$dep, b11=outfit$beta1[2,1], b12=outfit$beta2[2,1], se1=outfit$beta1[2,2], se2=outfit$beta2[2,2],
             Pvalue1=outfit$beta1[2,4], Pvalue2=outfit$beta2[2,4], sigmay1=1, sigma2=outfit$sigmay2, AIC=outfit$AIC,maf=outfit$maf, df2=outfit$df2,

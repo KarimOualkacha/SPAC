@@ -1104,7 +1104,7 @@ meanOfY1.KO<-function(eta, link=c("probit","logit","cloglog") )
 
 ### This function implement the log-likelihood
 
-cop.negloglik.mt.spl<-function(pars,y1,y2,marker,covar, y2ub, link, cop, lik, pi.un, pi.af){
+cop.negloglik.mt.spl<-function(pars,y1,y2,marker,covar, y2ub, link, cop, lik, prev, prev2){
 
   ### *** inputs ***
   ###
@@ -1202,23 +1202,23 @@ cop.negloglik.mt.spl<-function(pars,y1,y2,marker,covar, y2ub, link, cop, lik, pi
     #proby1.eq1.given.g<-meanOfY1(eta=beta.10+g*beta.1gc[1],link=link)
     #mu1g<- proby1.eq1.given.g
     #pi.un<-1-sum( proby1.eq1.given.g*Pg )
-     if( pi.un = NULL){
+     
     g<-0:2
     Pg<-c((1-maf)^2,2*maf*(1-maf),maf^2)
     mu0g <- meanOfY1.KO(eta=(yc-(beta.10+g*beta.1gc[1])),link=link)
     mu1g<- 1 -  mu0g # KO:change here also
     proby1.eq1.given.g<-mu1g;
     pi.un<-sum( proby1.eq1.given.g*Pg )
-    }
     
-    if( pi.af = NULL){
+    
+    
     ## P(Y1=1, Y2>y2ub) (prev2)
     mu2g<-beta.20+g*beta.2gc[1]
     F.y2ub.given.g <- pst(y2ub, mu2g, sigma=sigma22, nu=df2);
     proby1.eq0.y2.lower.given.g<-copCDF(u1=mu0g, u2=F.y2ub.given.g, alpha=alpha,cop=cop,par2=par2)
     proby1.eq1.y2.upper.given.g<- (1-F.y2ub.given.g) - mu0g + proby1.eq0.y2.lower.given.g
     pi.af<- sum( proby1.eq1.y2.upper.given.g*Pg )
-    }
+    
     prob.y1.y2 <- (y1==0)*(1-pi.un) + (y1==1)*pi.af
 
     ## Genotype frequency
@@ -1249,8 +1249,8 @@ cop.negloglik.mt.spl<-function(pars,y1,y2,marker,covar, y2ub, link, cop, lik, pi
     nmt<-nunaff+naff
 
     ## sampling probabilities (for prospective likelihood only)
-    prob.spl.given.y1.eq0<-nunaff/(nmt*(1-pi.un))
-    prob.spl.given.y1.eq1<-naff/(nmt*pi.af)
+    prob.spl.given.y1.eq0<-nunaff/(nmt*(1-prev))
+    prob.spl.given.y1.eq1<-naff/(nmt*prev2)
 
     prob.spl.given.y1.y2<-(y1==0)*prob.spl.given.y1.eq0 + (y1==1)*prob.spl.given.y1.eq1
 
@@ -1279,7 +1279,7 @@ cop.negloglik.mt.spl<-function(pars,y1,y2,marker,covar, y2ub, link, cop, lik, pi
 
 cop.fit.mt.spl<-function(y1, y2, marker, covar,y2ub, link=c("probit","logit","cloglog"),
                          cop=c("Gaussian","Student","Clayton","Gumbel","Frank","Joe"),
-                         lik=c("naive","retros","pros"), pi.un, pi.af){
+                         lik=c("naive","retros","pros"), prev, prev2){
   ### *** inputs ***
   ###  y1,y2 : vector of primary (y1) and  secondary (y2) traits values
   ###  marker : vector of genotype value  : {0,1,2,NA}
@@ -1406,7 +1406,7 @@ cop.fit.mt.spl<-function(y1, y2, marker, covar,y2ub, link=c("probit","logit","cl
     if(cop=="Student"){
       pars.init<- c(alpha.init,log.sigma.y2.init, beta1.init, beta2.init, df2.init, lglgc.maf.init, par2.init);
       outoptim<- try(optim(pars.init, cop.negloglik.mt.spl,
-                           y1=y1, y2=y2, marker=marker, covar=covar, y2ub=y2ub, link=link,  cop=cop, lik=lik, pi.un =pi.un, pi.af=pi.af,
+                           y1=y1, y2=y2, marker=marker, covar=covar, y2ub=y2ub, link=link,  cop=cop, lik=lik, prev = prev, prev2 = prev2,
                            method = "L-BFGS-B", lower=c(lower.par.cop,-Inf,rep(-Inf, 2*(m+1)),3,-Inf,3), upper=c(upper.par.cop,Inf,rep(Inf, 2*(m+1)),Inf,Inf,Inf),
                            hessian=T),TRUE);
     }
@@ -1414,7 +1414,7 @@ cop.fit.mt.spl<-function(y1, y2, marker, covar,y2ub, link=c("probit","logit","cl
       pars.init<- c(alpha.init,log.sigma.y2.init, beta1.init, beta2.init, df2.init, lglgc.maf.init);
       #print(pars.init)
       outoptim<- try(optim(pars.init, cop.negloglik.mt.spl,
-                           y1=y1, y2=y2, marker=marker, covar=covar, y2ub=y2ub, link=link, cop=cop, lik=lik,pi.un =pi.un, pi.af=pi.af,
+                           y1=y1, y2=y2, marker=marker, covar=covar, y2ub=y2ub, link=link, cop=cop, lik=lik, prev = prev, prev2 = prev2,
                            method = "L-BFGS-B", lower=c(lower.par.cop,-Inf,-3,rep(-Inf, (2*m+1)),3,-Inf), upper=c(upper.par.cop,Inf,3,rep(Inf, (2*m+1)),Inf,Inf),
                            hessian=T),TRUE);
     }
@@ -1424,7 +1424,7 @@ cop.fit.mt.spl<-function(y1, y2, marker, covar,y2ub, link=c("probit","logit","cl
     if(cop=="Student"){
       pars.init<- c(alpha.init,log.sigma.y2.init, beta1.init, beta2.init,df2.init, par2.init);
       outoptim<- try(optim(pars.init, cop.negloglik.mt.spl,
-                           y1=y1, y2=y2, marker=marker, covar=covar,y2ub=y2ub , link=link,  cop=cop, lik=lik,pi.un =pi.un, pi.af=pi.af,
+                           y1=y1, y2=y2, marker=marker, covar=covar,y2ub=y2ub , link=link,  cop=cop, lik=lik, prev = prev, prev2 = prev2,
                            method = "L-BFGS-B", lower=c(lower.par.cop,-Inf,rep(-Inf,2*(m+1)),3,3), upper=c(upper.par.cop,Inf,rep(Inf, 2*(m+1)),Inf,Inf),
                            hessian=T),TRUE);
     }
@@ -1432,7 +1432,7 @@ cop.fit.mt.spl<-function(y1, y2, marker, covar,y2ub, link=c("probit","logit","cl
     if(cop!="Student"){
       pars.init<- c(alpha.init,log.sigma.y2.init, beta1.init, beta2.init,df2.init);
       outoptim<- try(optim(pars.init, cop.negloglik.mt.spl,
-                           y1=y1, y2=y2, marker=marker, covar=covar, y2ub=y2ub, link=link,  cop=cop, lik=lik,pi.un =pi.un, pi.af=pi.af,
+                           y1=y1, y2=y2, marker=marker, covar=covar, y2ub=y2ub, link=link,  cop=cop, lik=lik, prev = prev, prev2 = prev2,
                            method = "L-BFGS-B", lower=c(lower.par.cop,-Inf,-3,rep(-Inf, (2*m+1)),3), upper=c(upper.par.cop,Inf,3,rep(Inf, (2*m+1)),Inf), # !!! need upper-lower for each copula
                            hessian=T),TRUE);
     }
@@ -1503,11 +1503,11 @@ cop.fit.mt.spl<-function(y1, y2, marker, covar,y2ub, link=c("probit","logit","cl
 #---------------------------------------------------------------------------------#
 #                                                                                 #
 #---------------------------------------------------------------------------------#
-gwas_cop_mt_snps<-function(y1,y2,marker,covar, y2ub, link, cop, lik, pi.un, pi.af){
+gwas_cop_mt_snps<-function(y1,y2,marker,covar, y2ub, link, cop, lik, prev, prev2){
 
 
   outfit<-cop.fit.mt.spl(y1=y1,y2=y2,marker=marker,covar=covar, y2ub=y2ub,
-                         link=link,  cop=cop, lik=lik, pi.un =pi.un, pi.af =pi.af)
+                         link=link,  cop=cop, lik=lik, prev = prev, prev2 = prev2)
 
   res<-list(dep = outfit$dep, b11=outfit$beta1[2,1], b21=outfit$beta2[2,1], se1=outfit$beta1[2,2], se2=outfit$beta2[2,2],
             Pvalue1=outfit$beta1[2,4], Pvalue2=outfit$beta2[2,4], sigmay1=1, sigma2=outfit$sigmay2, AIC=outfit$AIC,maf=outfit$maf, df2=outfit$df2,

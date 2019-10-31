@@ -71,8 +71,7 @@ SPAC <- function(y1=NULL, y2=NULL,
                    G=NULL,
                    covariates = NULL,
                    prev = 0.1,
-                   pi.un = NULL,
-                   pi.af =NULL,
+                   prev2 = 0.06112,
                    cutoffs = NULL,
                    link = "probit",
                    copfit = "Gaussian",
@@ -97,7 +96,7 @@ SPAC <- function(y1=NULL, y2=NULL,
     switch(Design,
          MT={
            outfit = gwas_cop_mt_snps(y1=y1, y2=y2, marker=G, covar=covariates, y2ub=cutoffs, link=link, cop=copfit,
-                    lik=method, pi.un = pi.un, pi.af = pi.af) # I have to add prev to this function
+                    lik=method, prev = prev, prev2 =prev2) # I have to add prev to this function
            
            results <- list(intercept.SNP.SecP = c(outfit$b02, outfit$se02),
                            SNP.SecP = c(outfit$b12,outfit$se2), 

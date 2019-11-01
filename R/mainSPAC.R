@@ -72,8 +72,7 @@ SPAC <- function(y1=NULL, y2=NULL,
                    covariates = NULL,
                    prev = NULL,
                    prev2 = NULL,
-                   p.lower = NULL,
-                   p.upper = NULL,
+                   p.lu = NULL,
                    cutoffs = NULL,
                    link = "probit",
                    copfit = "Gaussian",
@@ -90,7 +89,7 @@ SPAC <- function(y1=NULL, y2=NULL,
   check_link(link,Design)
   check_method(method)
   check_prev(prev,prev2,Design,method)
-  check_p.lower_uppers(p.lower,p.upper,Design,method)
+  check_p.lower_uppers(p.lu,Design,method)
   check_cutoffs(cutoffs,Design)
   
   #----- calculation of p-values

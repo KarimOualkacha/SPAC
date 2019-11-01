@@ -62,7 +62,7 @@ check_covariates <- function(covariates, y, method) {
 }
 
 
-check_prev <- function(prev,Design,method) {
+check_prev <- function(prev,prev2,Design,method) {
   if (is.null(prev) && ((Design=="CC") | (Design=="MT"))) {
     if(method=="pros") {
   stop("The primary phenotype prevalance should be specified for the copula-based prospective approach, 

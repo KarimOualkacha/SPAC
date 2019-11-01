@@ -82,9 +82,9 @@ check_prev <- function(prev,prev2,Design,method) {
      
 }
 
-check_p.lower_uppers <- function(p.lower,p.upper,Design,method){
+check_p.lower_uppers <- function(p.lu,Design,method){
     
-    if((Design =="ET") && (is.null(p.lower) | is.null(p.upper))){
+    if((Design =="ET") && is.null(p.lu)){
         
         if(method=="pros") {
         stop("The percentages of individuals with lower and upper extreme primary trait should be specified 

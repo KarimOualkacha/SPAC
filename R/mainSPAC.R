@@ -72,6 +72,8 @@ SPAC <- function(y1=NULL, y2=NULL,
                    covariates = NULL,
                    prev = 0.1,
                    prev2 = 0.06112,
+                   p.lower = 0.1,
+                   p.upper = 0.1,
                    cutoffs = NULL,
                    link = "probit",
                    copfit = "Gaussian",
@@ -113,7 +115,7 @@ SPAC <- function(y1=NULL, y2=NULL,
          },
          ET={
            outfit = gwas_cop_et_snps(y1=y1, y2=y2, marker=G, covar=covariates, yub=cutoffs[2], ylb=cutoffs[1], cop=copfit, 
-                      lik=method, prev = prev)
+                      lik=method, p.lower =p.lower, p.upper =p.upper)
            
            results <- list(intercept.SNP.SecP = c(outfit$b02, outfit$se02),
                            SNP.SecP = c(outfit$b12,outfit$se2), 

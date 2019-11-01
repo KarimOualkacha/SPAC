@@ -82,7 +82,7 @@ check_prev <- function(prev,prev2,Design,method) {
      
 }
 
-check__p.lower_uppers <- function(p.lower,p.upper,Design,method){
+check_p.lower_uppers <- function(p.lower,p.upper,Design,method){
     
     if((Design =="ET") && (is.null(p.lower) | is.null(p.upper))){
         

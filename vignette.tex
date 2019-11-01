@@ -331,11 +331,11 @@ This is the simplest way to run SPAC for a single-SNP/secondary phenotype associ
 \begin{itemize}
 \item Here the |prev| is a scalar between 0 and 1, specifies the primary phenotype prevalance.
 It is needed for the |method = "prosp"| and |Design = "CC"| or |Design = "MT"|. Default is |prev = NULL|.
-If it is not specified, it will be estimated form the data.
+
 
 \item The |link| is a character specifies the link function to be used for modelling the marginal distribution of the binary primary phenotype for the CC and MT designs. The available link functions are |link=c("probit","logit","cloglog")|. The defaut is |link = "probit"|, which th liabiltiy latent model.
 
-\item The |copfit| is a character that selects the copula model to use for modelling priamry-secondary phenptypes dependence. Can be one of the following:
+\item The |copfit| is a character that selects the copula model to use for modelling primary-secondary phenptypes dependence. Can be one of the following:
 \begin{itemize}
 \item |copfit = "Gaussian"|, (default)
 \item |copfit = "Student"|, Student copula with degree of freedom equals 10

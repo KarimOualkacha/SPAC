@@ -143,7 +143,7 @@ copKT2Par<-function(tau,cop="Gaussian"){
 
 ### This function implement the log-likelihood for copula
 
-cop.negloglik.et.spl<-function(pars,y1,y2,marker,covar, yub, ylb,lik="pros", cop="Gaussian", p.lower, p.upper){
+cop.negloglik.et.spl<-function(pars,y1,y2,marker,covar, yub, ylb,lik="pros", cop="Gaussian", p.lu){
 
   ### *** inputs ***
   ###
@@ -260,8 +260,8 @@ cop.negloglik.et.spl<-function(pars,y1,y2,marker,covar, yub, ylb,lik="pros", cop
 
     #prob.y1.lower <- sum( pnorm(ylb,mu1g,sigma.y1)*Pg );
     #prob.y1.upper <-1-sum( (pnorm(yub,mu1g,sigma.y1) )*Pg );
-    prob.y1.lower <- p.lower
-    prob.y1.upper <-p.upper
+    prob.y1.lower <- p.lu[1]
+    prob.y1.upper <-p.lu[2]
 
     # spl probabilities
     net<-nlb+nub
@@ -287,7 +287,7 @@ cop.negloglik.et.spl<-function(pars,y1,y2,marker,covar, yub, ylb,lik="pros", cop
 
 ### This function estimates model parmeters and perform the secondary phenotype test
 cop.fit.et.spl<-function(y1,y2,marker,covar, yub, ylb,
-                         cop="Gaussian", lik="pros", p.lower, p.upper){
+                         cop="Gaussian", lik="pros", p.lu){
   ### *** inputs ***
   ###  y1,y2 : vector of primary (y1) and  secondary (y2) traits values
   ###  marker : vector of genotype value  : {0,1,2,NA}
@@ -404,7 +404,7 @@ cop.fit.et.spl<-function(y1,y2,marker,covar, yub, ylb,
 
   outoptim<-optim(pars.init, cop.negloglik.et.spl,
                   y1=y1,y2=y2,marker=marker,covar=covar, yub=yub, ylb=ylb,
-                  cop=cop, lik=lik,p.lower = p.lower, p.upper =p.upper,
+                  cop=cop, lik=lik,p.lu = p.lu,
                   method="BFGS",
                   hessian=T);
 
@@ -492,10 +492,10 @@ cop.fit.et.spl<-function(y1,y2,marker,covar, yub, ylb,
 
 
 gwas_cop_et_snps<-function(y1,y2,marker,covar,
-                           yub, ylb, lik, cop, p.lower, p.upper){
+                           yub, ylb, lik, cop, p.lu){
 
   outfit<-cop.fit.et.spl(y1=y1,y2=y2,marker=marker,covar=covar,
-                         yub=yub, ylb=ylb,  cop=cop, lik=lik, p.lower = p.lower, p.upper =p.upper)
+                         yub=yub, ylb=ylb,  cop=cop, lik=lik, p.lu = p.lu)
 
   res<-list(dep=outfit$dep, b11=outfit$beta1[2,1], b21=outfit$beta2[2,1], se1=outfit$beta1[2,2], se2=outfit$beta2[2,2],
             Pvalue1=outfit$beta1[2,4], Pvalue2=outfit$beta2[2,4], sigmay1=outfit$sigmay1, sigmay2=outfit$sigmay2, AIC=outfit$AIC, maf=outfit$maf,df2=outfit$df2,

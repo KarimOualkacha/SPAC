@@ -216,9 +216,9 @@ the following data needs to be present\footnote{The example code in
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-  \hlstd{data} \hlkwb{<-} \hlkwd{system.file}\hlstd{(}\hlstr{"data"}\hlstd{,}\hlstr{"data.RData"}\hlstd{,}
-                            \hlkwc{package}\hlstd{=}\hlstr{"SPAC"}\hlstd{)}
-  \hlkwd{load}\hlstd{(data)}
+ 
+ \hlkwd{data}\hlstd{(data,}\hlkwc{package}\hlstd{=}\hlstr{"SPAC"}\hlstd{)}
+  
 \hlcom{# data.file is .RData file contains 3 examples of data sets for CC, ET and MT designs}
 \hlcom{# matrix of two confounders/covariates: one dichotmous and one continuous covariate}
   \hlkwd{dim}\hlstd{(cov.matCC)}

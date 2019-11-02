@@ -216,9 +216,9 @@ the following data needs to be present\footnote{The example code in
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-  \hlstd{data} \hlkwb{<-} \hlkwd{system.file}\hlstd{(}\hlstr{"data"}\hlstd{,}\hlstr{"data.RData"}\hlstd{,}
-                            \hlkwc{package}\hlstd{=}\hlstr{"SPAC"}\hlstd{)}
-  \hlkwd{load}\hlstd{(data)}
+
+   \hlkwd{data}\hlstd{(data,}\hlkwc{package}\hlstd{=}\hlstr{"SPAC"}\hlstd{)}
+   
 \hlcom{# data.file is .RData file contains 3 examples of data sets for CC, ET and MT designs}
 \hlcom{# matrix of two confounders/covariates: one dichotmous and one continuous covariate}
   \hlkwd{dim}\hlstd{(cov.matCC)}
@@ -245,9 +245,7 @@ the following data needs to be present\footnote{The example code in
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-  \hlstd{data} \hlkwb{<-} \hlkwd{system.file}\hlstd{(}\hlstr{"data"}\hlstd{,} \hlstr{"data.RData"}\hlstd{,}
-                         \hlkwc{package}\hlstd{=}\hlstr{"SPAC"}\hlstd{)}
-  \hlkwd{load}\hlstd{(data)}
+   \hlkwd{data}\hlstd{(data,}\hlkwc{package}\hlstd{=}\hlstr{"SPAC"}\hlstd{)}
 \hlcom{# data is .RData file contains 3 examples of data sets for CC, ET and MT designs}
 \hlcom{# SNP data for the CC design: a vector of legnth}
   \hlkwd{length}\hlstd{(markerCC)}
@@ -360,6 +358,7 @@ The next code run SPAC for a single-SNP/secondary phenotype association test und
                    \hlkwc{method} \hlstd{=} \hlstr{"pros"}\hlstd{,}
                    \hlkwc{Design} \hlstd{=} \hlstr{"ET"}\hlstd{,}
                    \hlkwc{cutoffs} \hlstd{=} \hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1.498953}\hlstd{,}\hlnum{2.174215}\hlstd{)}
+                   \hlkwc{p.lu} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0.1}\hlstd{,}\hlnum{0.1}\hlstd{)}
                    \hlstd{)}
 \end{alltt}
 
@@ -404,12 +403,15 @@ The next code run SPAC for a single-SNP/secondary phenotype association test und
 \end{kframe}
 \end{knitrout}
 
-The |cutoffs| is a vector or scalar, depending on the sampling mechanism design |Design = "ET"| or  |Design = "MT"|. For the ET design the |cutoffs| is a $2\times 1$ vector, |cutoffs = c(ylb,yub)|, with
+\begin{itemize}
+ \item  The |p.lu| is a vector, specifies the percentages of individuals with lower and upper extreme primary trait (first and second
+ components respectively).It is needed for the |method ="pros"| and |Design = "CC"|. Default is |p.lu =NULL|.
+\item The |cutoffs| is a vector or scalar, depending on the sampling mechanism design |Design = "ET"| or  |Design = "MT"|. For the ET design the |cutoffs| is a $2\times 1$ vector, |cutoffs = c(ylb,yub)|, with
 \begin{itemize}
 \item ylb is the lower primary trait threshold
 \item yub is the upper primary trait threshold
 \end{itemize}
-
+\end{itemize}
 Of note, the ET design does not need a |link| argument since it fits a liability thresohold model for the primary phenotype.
 
 \subsection{Using SPAC for an multiple-trait (MT) design}

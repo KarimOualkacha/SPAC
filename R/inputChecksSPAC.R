@@ -65,7 +65,7 @@ check_covariates <- function(covariates, y, method) {
 check_prev <- function(prev,prev2,Design,method) {
   if (is.null(prev) && ((Design=="CC") | (Design=="MT"))) {
     if(method=="pros") {
-  stop("The primary phenotype prevalance should be specified for the copula-based prospective approach, 
+  stop("The primary phenotype prevalence should be specified for the copula-based prospective approach, 
        method =", method , "for Case-Control or the Multiple-Trait designs")
     } 
   }  

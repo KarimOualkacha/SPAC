@@ -62,14 +62,41 @@ check_covariates <- function(covariates, y, method) {
 }
 
 
-check_prev <- function(prev,Design,method) {
+check_prev <- function(prev,prev2,Design,method) {
   if (is.null(prev) && ((Design=="CC") | (Design=="MT"))) {
     if(method=="pros") {
-  stop("The primary phenotype prevalance should be specified for the copula-based prospective approach, 
-       method =", method, "for Case-Control or the Maultiple-Trait designs")
-    }  
+  stop("The primary phenotype prevalence should be specified for the copula-based prospective approach, 
+       method =", method , "for Case-Control or the Multiple-Trait designs")
+    } 
   }  
+    
+  if(is.null(prev2) && (Design == "MT")){
+     if(method=="pros") {
+         
+       stop("The proportion of diseased individuals with secondary trait exceeding a cutoff
+       should be specified for the copula-based prospective approach, 
+       method =", method , "for the Multiple-Trait designs")  
+         
+     } 
+   }
+     
 }
+
+check_p.lower_uppers <- function(p.lu,Design,method){
+    
+    if((Design =="ET") && is.null(p.lu)){
+        
+        if(method=="pros") {
+        stop("The percentages of individuals with lower and upper extreme primary trait should be specified 
+         for the copula-based prospective approach, 
+         method =", method , "for Extreme-Trait designs")
+       } 
+        
+        
+    }
+   
+ }
+
 
 
 check_cutoffs <- function(cutoffs,Design) {

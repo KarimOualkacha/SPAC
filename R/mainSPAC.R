@@ -71,6 +71,8 @@ SPAC <- function(y1=NULL, y2=NULL,
                    G=NULL,
                    covariates = NULL,
                    prev = NULL,
+                   prev2 = NULL,
+                   p.lu = NULL,
                    cutoffs = NULL,
                    link = "probit",
                    copfit = "Gaussian",
@@ -86,7 +88,8 @@ SPAC <- function(y1=NULL, y2=NULL,
   check_copula(copfit)
   check_link(link,Design)
   check_method(method)
-  check_prev(prev,Design,method)
+  check_prev(prev,prev2,Design,method)
+  check_p.lower_uppers(p.lu,Design,method)
   check_cutoffs(cutoffs,Design)
   
   #----- calculation of p-values
@@ -94,7 +97,8 @@ SPAC <- function(y1=NULL, y2=NULL,
   
     switch(Design,
          MT={
-           outfit = gwas_cop_mt_snps(y1=y1, y2=y2, marker=G, covar=covariates, y2ub=cutoffs, link=link, cop=copfit, lik=method) # I have to add prev to this function
+           outfit = gwas_cop_mt_snps(y1=y1, y2=y2, marker=G, covar=covariates, y2ub=cutoffs, link=link, cop=copfit,
+                    lik=method, prev = prev, prev2 =prev2) # I have to add prev to this function
            
            results <- list(intercept.SNP.SecP = c(outfit$b02, outfit$se02),
                            SNP.SecP = c(outfit$b12,outfit$se2), 
@@ -102,7 +106,7 @@ SPAC <- function(y1=NULL, y2=NULL,
                            intercept.SNP.PrP = c(outfit$b01, outfit$se01), 
                            SNP.PrP = c(outfit$b11,outfit$se1),
                            P.value.PrP = outfit$Pvalue1,
-                           alpha = outfit$dep[1],
+                           theta = outfit$dep[1],
                            tau = outfit$dep[2],
                            df2 = outfit$df2,
                            AIC = outfit$AIC)
@@ -110,7 +114,8 @@ SPAC <- function(y1=NULL, y2=NULL,
            results
          },
          ET={
-           outfit = gwas_cop_et_snps(y1=y1, y2=y2, marker=G, covar=covariates, yub=cutoffs[2], ylb=cutoffs[1], cop=copfit, lik=method)
+           outfit = gwas_cop_et_snps(y1=y1, y2=y2, marker=G, covar=covariates, yub=cutoffs[2], ylb=cutoffs[1], cop=copfit, 
+                      lik=method, p.lu=p.lu)
            
            results <- list(intercept.SNP.SecP = c(outfit$b02, outfit$se02),
                            SNP.SecP = c(outfit$b12,outfit$se2), 
@@ -118,7 +123,7 @@ SPAC <- function(y1=NULL, y2=NULL,
                            intercept.SNP.PrP = c(outfit$b01, outfit$se01), 
                            SNP.PrP = c(outfit$b11,outfit$se1),
                            P.value.PrP = outfit$Pvalue1,
-                           alpha = outfit$dep[1],
+                           theta = outfit$dep[1],
                            tau = outfit$dep[2],
                            df2 = outfit$df2,
                            AIC = outfit$AIC)
@@ -126,7 +131,8 @@ SPAC <- function(y1=NULL, y2=NULL,
            results
          },
          CC={
-           outfit = gwas_cop_cc_snps(y1=y1, y2=y2, marker=G, covar=covariates, link=link, cop=copfit, lik=method)
+           outfit = gwas_cop_cc_snps(y1=y1, y2=y2, marker=G, covar=covariates, link=link, cop=copfit, 
+                    lik=method, prev = prev)
 
                       results <- list(intercept.SNP.SecP = c(outfit$b02, outfit$se02),
                            SNP.SecP = c(outfit$b12,outfit$se2), 
@@ -134,7 +140,7 @@ SPAC <- function(y1=NULL, y2=NULL,
                            intercept.SNP.PrP = c(outfit$b01, outfit$se01), 
                            SNP.PrP = c(outfit$b11,outfit$se1),
                            P.value.PrP = outfit$Pvalue1,
-                           alpha = outfit$dep[1],
+                           theta = outfit$dep[1],
                            tau = outfit$dep[2],
                            df2 = outfit$df2,
                            AIC = outfit$AIC)

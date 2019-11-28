@@ -1,6 +1,6 @@
 \documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
 \def\maxwidth{ %
   \ifdim\Gin@nat@width>\linewidth
@@ -106,9 +106,9 @@ Working with SPAC}
 \section{Introduction}
 \label{sec:introduction}
 
-This is a unified copula-based framework which tests for secondary phenotypes association and a single SNP in presence of selection bias. The method fits both retrospective and prosepctive likelihoods to handel selection bias under case-contro (CC), extreme-trait (ET) and mulitple-trait (MT) sampling designs. The dependence between primary and secondary phenotypes is modelled via copulas. Thus, SPAC is a robust method for non-normality assumptiom of the secondary trait.
+This is a unified copula-based framework which tests for secondary phenotypes association and a single SNP in presence of selection bias. The method fits both retrospective and prospective likelihoods to handel selection bias under case-control (CC), extreme-trait (ET) and mulitple-trait (MT) sampling designs. The dependence between primary and secondary phenotypes is modelled via copulas. Thus, SPAC is a robust method for non-normality assumption of the secondary trait.
 
-SPAC is an R package that contains methods to perform genetic association of a quantitative secondary phenotype and a single SNP in presence of selection bias. SPAC is a unified copula-based framework  fits both retrospective and prosepctive likelihoods to handel selection bias under case-contro (CC), extreme-trait (ET) and mulitple-trait (MT) sampling designs. The dependence between primary and secondary phenotypes is modelled via copulas. Thus, SPAC is a robust method for non-normality assumptiom of the secondary trait; improved power is possible by appropriate modelling of the primary-secondary phenotypes joint distribution via copula models.
+SPAC is an R package that contains methods to perform genetic association of a quantitative secondary phenotype and a single SNP in presence of selection bias. SPAC is a unified copula-based framework  fits both retrospective and prospective likelihoods to handel selection bias under case-control (CC), extreme-trait (ET) and multiple-trait (MT) sampling designs. The dependence between primary and secondary phenotypes is modelled via copulas. Thus, SPAC is a robust method for non-normality assumption of the secondary trait; improved power is possible by appropriate modelling of the primary-secondary phenotypes joint distribution via copula models.
 
 The main user-visible function of the package is |SPAC()| function which can be used to
 analyse single-SNP/Secondary phenotype association in one go.
@@ -119,7 +119,7 @@ The main function allows for prospective and retrospective copula-based likeliho
   \item retros, retrospective copula-based likelihood
   \end{itemize}
 
-Of note, the retrospective method does not handle covariates while the prosepecetive-based method controls for covariates. The retrospective-based method, \emph{method="retros"}, is the computationally fastest method, and these $p$-values can be used to triage which SNPs of the genome should be re-analyzed with \emph{method="pros"}.
+Of note, the retrospective method does not handle covariates while the prospective-based method controls for covariates. The retrospective-based method, \emph{method="retros"}, is the computationally fastest method, and these $p$-values can be used to triage which SNPs of the genome should be re-analyzed with \emph{method="pros"}.
 
 
 SPAC allows also for primary-secondary dependence modelling using five copulas
@@ -137,42 +137,32 @@ In order to run any of the examples below, the package needs to be installed and
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(devtools)}
-\hlstd{devtools}\hlopt{::}\hlkwd{install}\hlstd{()}
 \end{alltt}
 
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Installing SPAC}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file\ \ \textbackslash{}\\\#\#\ \  --no-environ --no-save --no-restore --quiet CMD INSTALL\ \ \textbackslash{}\\\#\#\ \  '/Users/KOualkachaUQAM/Dropbox/SPAC'\ \ \textbackslash{}\\\#\#\ \  --library='/Library/Frameworks/R.framework/Versions/3.4/Resources/library'\ \ \textbackslash{}\\\#\#\ \  --install-tests}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# }}\begin{alltt}
-\hlcom{# devtools::install_github('KarimOualkacha/SPAC', build_vignettes = TRUE)}
-\hlstd{devtools}\hlopt{::}\hlkwd{load_all}\hlstd{()}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: usethis}}\begin{alltt}
+\hlcom{#devtools::install_github('micau80/SPAC', ref = "micau80-patch-1", dep =FALSE)}
+                         \hlcom{#build_vignettes = TRUE, dep =FALSE)}
+\hlstd{devtools}\hlopt{::}\hlkwd{install_github}\hlstd{(}\hlstr{'micau80/SPAC'}\hlstd{,} \hlkwc{dep} \hlstd{=}\hlnum{FALSE}\hlstd{)}
 \end{alltt}
 
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading SPAC}}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Skipping install of 'SPAC' from a github remote, the SHA1 (4c5bfaec) has not changed since last install.\\\#\#\ \  Use `force = TRUE` to force installation}}\begin{alltt}
+\hlkwd{library}\hlstd{(SPAC)}
+\end{alltt}
+
 
 {\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: MASS}}
 
 {\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: LaplacesDemon}}
 
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'LaplacesDemon' was built under R version 3.4.4}}
-
 {\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: VineCopula}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'VineCopula' was built under R version 3.4.4}}
 
 {\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: copula}}
 
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'copula' was built under R version 3.4.4}}
-
 {\ttfamily\noindent\itshape\color{messagecolor}{\#\# \\\#\# Attaching package: 'copula'}}
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following object is masked from 'package:LaplacesDemon':\\\#\# \\\#\#\ \ \ \  interval}}\begin{alltt}
-\hlkwd{library}\hlstd{(SPAC)}
-\end{alltt}
-\end{kframe}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following object is masked from 'package:LaplacesDemon':\\\#\# \\\#\#\ \ \ \  interval}}\end{kframe}
 \end{knitrout}
 
 \section{Loading the input data}
@@ -184,16 +174,14 @@ the following data needs to be present\footnote{The example code in
   package, that is why the \lstinline{package} argument to the
   \lstinline{system.file()} function is used.}:
 \begin{itemize}
-\item \emph{Phenotype data}; primary and secondary phenpotypes data should be present separatly in the form of
+\item \emph{Phenotype data}; primary and secondary phenpotypes data should be present separately in the form of
   an R vector (one value for each individual). It is up to you (as user)
   to create the vector, for example by reading it from a CSV file using R's
   |read.csv()| function or like this:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-  \hlstd{data} \hlkwb{<-} \hlkwd{system.file}\hlstd{(}\hlstr{"data"}\hlstd{,}\hlstr{"data.RData"}\hlstd{,}
-                            \hlkwc{package}\hlstd{=}\hlstr{"SPAC"}\hlstd{)}
-  \hlkwd{load}\hlstd{(data)}
+  \hlkwd{data}\hlstd{(data,} \hlkwc{package} \hlstd{=} \hlstr{"SPAC"}\hlstd{)}
 \hlcom{# data is .RData file contains 3 examples of data sets for CC, ET and MT designs}
 \hlcom{# y1cc: primary trait under the case-control (CC) design}
   \hlkwd{head}\hlstd{(y1cc)}
@@ -216,9 +204,7 @@ the following data needs to be present\footnote{The example code in
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-  \hlstd{data} \hlkwb{<-} \hlkwd{system.file}\hlstd{(}\hlstr{"data"}\hlstd{,}\hlstr{"data.RData"}\hlstd{,}
-                            \hlkwc{package}\hlstd{=}\hlstr{"SPAC"}\hlstd{)}
-  \hlkwd{load}\hlstd{(data)}
+  \hlkwd{data}\hlstd{(data,} \hlkwc{package} \hlstd{=} \hlstr{"SPAC"}\hlstd{)}
 \hlcom{# data.file is .RData file contains 3 examples of data sets for CC, ET and MT designs}
 \hlcom{# matrix of two confounders/covariates: one dichotmous and one continuous covariate}
   \hlkwd{dim}\hlstd{(cov.matCC)}
@@ -245,9 +231,7 @@ the following data needs to be present\footnote{The example code in
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-  \hlstd{data} \hlkwb{<-} \hlkwd{system.file}\hlstd{(}\hlstr{"data"}\hlstd{,} \hlstr{"data.RData"}\hlstd{,}
-                         \hlkwc{package}\hlstd{=}\hlstr{"SPAC"}\hlstd{)}
-  \hlkwd{load}\hlstd{(data)}
+  \hlkwd{data}\hlstd{(data,} \hlkwc{package} \hlstd{=} \hlstr{"SPAC"}\hlstd{)}
 \hlcom{# data is .RData file contains 3 examples of data sets for CC, ET and MT designs}
 \hlcom{# SNP data for the CC design: a vector of legnth}
   \hlkwd{length}\hlstd{(markerCC)}
@@ -293,49 +277,49 @@ This is the simplest way to run SPAC for a single-SNP/secondary phenotype associ
 \end{alltt}
 \begin{verbatim}
 ## $intercept.SNP.SecP
-## [1] 0.63826541 0.07032754
+## [1] 0.6383071 0.0703275
 ## 
 ## $SNP.SecP
-## [1] 0.01637158 0.05628887
+## [1] 0.01637375 0.05628824
 ## 
 ## $P.value.SecP
-## [1] 0.7711666
+## [1] 0.7711346
 ## 
 ## $intercept.SNP.PrP
-## [1] -2.24385138  0.09328779
+## [1] -2.24384294  0.09328811
 ## 
 ## $SNP.PrP
-## [1] 0.17561800 0.06694801
+## [1] 0.17561193 0.06694834
 ## 
 ## $P.value.PrP
-## [1] 0.008710817
+## [1] 0.00871347
 ## 
-## $alpha
+## $theta
 ##           
-## 0.4744384 
+## 0.4744207 
 ## 
 ## $tau
 ##       tau 
-## 0.3146976 
+## 0.3146849 
 ## 
 ## $df2
 ##          
-## 5004.195 
+## 7188.598 
 ## 
 ## $AIC
-## [1] 3885.296
+## [1] 3885.297
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
 
 \begin{itemize}
-\item Here the |prev| is a scalar between 0 and 1, specifies the primary phenotype prevalance.
-It is needed for the |method = "prosp"| and |Design = "CC"| or |Design = "MT"|. Default is |prev = NULL|.
-If it is not specified, it will be estimated form the data.
+\item Here the |prev| is a scalar between 0 and 1, specifies the primary phenotype prevalence.
+It is needed for the |method = "pros"| and |Design = "CC"| or |Design = "MT"|.
 
-\item The |link| is a character specifies the link function to be used for modelling the marginal distribution of the binary primary phenotype for the CC and MT designs. The available link functions are |link=c("probit","logit","cloglog")|. The defaut is |link = "probit"|, which th liabiltiy latent model.
 
-\item The |copfit| is a character that selects the copula model to use for modelling priamry-secondary phenptypes dependence. Can be one of the following:
+\item The |link| is a character, specifies the link function to be used for modelling the marginal distribution of the binary primary phenotype for the CC and MT designs. The available link functions are |link=c("probit","logit","cloglog")|. The defaut is |link = "probit"|, which the liability latent model.
+
+\item The |copfit| is a character that selects the copula model to use for modelling primary-secondary phenptypes dependence. Can be one of the following:
 \begin{itemize}
 \item |copfit = "Gaussian"|, (default)
 \item |copfit = "Student"|, Student copula with degree of freedom equals 10
@@ -359,7 +343,8 @@ The next code run SPAC for a single-SNP/secondary phenotype association test und
                    \hlkwc{copfit} \hlstd{=} \hlstr{"Gaussian"}\hlstd{,}
                    \hlkwc{method} \hlstd{=} \hlstr{"pros"}\hlstd{,}
                    \hlkwc{Design} \hlstd{=} \hlstr{"ET"}\hlstd{,}
-                   \hlkwc{cutoffs} \hlstd{=} \hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1.498953}\hlstd{,}\hlnum{2.174215}\hlstd{)}
+                   \hlkwc{cutoffs} \hlstd{=} \hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1.498953}\hlstd{,}\hlnum{2.174215}\hlstd{),}
+                   \hlkwc{p.lu} \hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0.1}\hlstd{,}\hlnum{0.1}\hlstd{)}
                    \hlstd{)}
 \end{alltt}
 
@@ -369,52 +354,60 @@ The next code run SPAC for a single-SNP/secondary phenotype association test und
 \end{alltt}
 \begin{verbatim}
 ## $intercept.SNP.SecP
-## [1] 1.02536920 0.09166647
+## [1] 0.39526153 0.08734849
 ## 
 ## $SNP.SecP
-## [1] 0.06940319
+## [1] 0.07040854
 ## 
 ## $P.value.SecP
-## [1] 0.5538218
+## [1] 0.5432109
 ## 
 ## $intercept.SNP.PrP
-## [1] 0.42018677 0.05895765
+## [1] -0.2373004  0.0560055
 ## 
 ## $SNP.PrP
-## [1] 0.08110449 0.04060297
+## [1] 0.08189576 0.04184267
 ## 
 ## $P.value.PrP
-## [1] 0.04577073
+## [1] 0.05032032
 ## 
-## $alpha
+## $theta
 ##           
-## 0.7291998 
+## 0.7362122 
 ## 
 ## $tau
-##      tau 
-## 0.520215 
+##       tau 
+## 0.5267749 
 ## 
 ## $df2
 ##          
-## 41.31134 
+## 35.11171 
 ## 
 ## $AIC
-## [1] 5257.224
+## [1] 5201.318
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
 
-The |cutoffs| is a vector or scalar, depending on the sampling mechanism design |Design = "ET"| or  |Design = "MT"|. For the ET design the |cutoffs| is a $2\times 1$ vector, |cutoffs = c(ylb,yub)|, with
+
+
+\begin{itemize}
+\item The |cutoffs| is a vector or scalar, depending on the sampling mechanism design |Design = "ET"| or  |Design = "MT"|. For the ET design the |cutoffs| is a $2\times 1$ vector, |cutoffs = c(ylb,yub)|, with
 \begin{itemize}
 \item ylb is the lower primary trait threshold
 \item yub is the upper primary trait threshold
 \end{itemize}
 
-Of note, the ET design does not need a |link| argument since it fits a liability thresohold model for the primary phenotype.
+\item The |p.lu| is a vector specifying the proportion of individuals with lower and upper extreme primary trait. It is needed for the |method = "pros"| and |Design = "ET"|.
+
+\end{itemize}
+
+
+Of note, the ET design does not need a |link| argument since it fits a liability threshold model for the primary phenotype.
 
 \subsection{Using SPAC for an multiple-trait (MT) design}
 \label{sec:using-SPAC-MT}
-The next code run SPAC for a single-SNP/secondary phenotype association test under the MT design. Here we use |method = "Clayton"| as a copula model to model the joint distribution of the primary-secondary phenotypes:
+The next code run SPAC for a single-SNP/secondary phenotype association test under the MT design. Here we use |copfit = "Clayton"| as a copula model to model the joint distribution of the primary-secondary phenotypes:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -427,27 +420,28 @@ The next code run SPAC for a single-SNP/secondary phenotype association test und
                    \hlkwc{method} \hlstd{=} \hlstr{"pros"}\hlstd{,}
                    \hlkwc{Design} \hlstd{=} \hlstr{"MT"}\hlstd{,}
                    \hlkwc{cutoffs} \hlstd{=} \hlnum{1.865465}\hlstd{,}
-                   \hlkwc{prev} \hlstd{=} \hlnum{0.1}\hlstd{)}
+                   \hlkwc{prev} \hlstd{=} \hlnum{0.1}\hlstd{,}
+                   \hlkwc{prev2} \hlstd{=}\hlnum{0.06112}\hlstd{)}
 \end{alltt}
 
 
 {\ttfamily\noindent\itshape\color{messagecolor}{\#\# Starting association analysis of the SNP...}}
 
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning in sqrt(diag(mvar)): NaNs produced}}\begin{alltt}
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in sqrt(diag(mvar)): production de NaN}}\begin{alltt}
 \hlstd{SNPresults.MT}
 \end{alltt}
 \begin{verbatim}
 ## $intercept.SNP.SecP
-## [1] 0.66932760 0.07369333
+## [1] 0.6693276 0.0736944
 ## 
 ## $SNP.SecP
-## [1] 0.05814342
+## [1] 0.05814432
 ## 
 ## $P.value.SecP
-## [1] 0.6116331
+## [1] 0.6116386
 ## 
 ## $intercept.SNP.PrP
-## [1] -2.2577354  0.1104643
+## [1] -2.2577354  0.1104644
 ## 
 ## $SNP.PrP
 ## [1] 0.15285477 0.06968403
@@ -455,7 +449,7 @@ The next code run SPAC for a single-SNP/secondary phenotype association test und
 ## $P.value.PrP
 ## [1] 0.02826844
 ## 
-## $alpha
+## $theta
 ##          
 ## 1.225416 
 ## 
@@ -473,7 +467,16 @@ The next code run SPAC for a single-SNP/secondary phenotype association test und
 \end{kframe}
 \end{knitrout}
 
-In the MT design, the |cutoffs| is a scalar, |cutoffs = y2ub|, with |y2ub| is the upper secondary trait threshold
+
+\begin{itemize}
+
+\item In the MT design, the |cutoffs| is a scalar, |cutoffs = y2ub|, with |y2ub| is the upper secondary trait threshold
+
+\item The |prev2| is a scalar between 0 and 1, specifies the proportion of diseased individuals with secondary trait exceeding the threshold |y2ub|.
+ It is needed for the |method ="pros"| and |Design = "MT"|.
+
+
+\end{itemize}
 
 \begin{thebibliography}{99}
 \bibitem{Tounkara2019} Fod\'e Tounkara, Genevi\`eve Lefebvre, Celia MT Greenwood and Karim Oualkacha (2019). \emph{A flexible copula-based approach for the analysis of secondary phenotypes in ascertained samples}. Statistics in Medicine. 1-32. Under revision.

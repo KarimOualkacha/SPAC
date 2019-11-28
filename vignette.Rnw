@@ -61,9 +61,9 @@ concordance=TRUE
 \section{Introduction}
 \label{sec:introduction}
 
-This is a unified copula-based framework which tests for secondary phenotypes association and a single SNP in presence of selection bias. The method fits both retrospective and prosepctive likelihoods to handel selection bias under case-contro (CC), extreme-trait (ET) and mulitple-trait (MT) sampling designs. The dependence between primary and secondary phenotypes is modelled via copulas. Thus, SPAC is a robust method for non-normality assumptiom of the secondary trait.
+This is a unified copula-based framework which tests for secondary phenotypes association and a single SNP in presence of selection bias. The method fits both retrospective and prospective likelihoods to handel selection bias under case-control (CC), extreme-trait (ET) and mulitple-trait (MT) sampling designs. The dependence between primary and secondary phenotypes is modelled via copulas. Thus, SPAC is a robust method for non-normality assumption of the secondary trait.
 
-SPAC is an R package that contains methods to perform genetic association of a quantitative secondary phenotype and a single SNP in presence of selection bias. SPAC is a unified copula-based framework  fits both retrospective and prosepctive likelihoods to handel selection bias under case-contro (CC), extreme-trait (ET) and mulitple-trait (MT) sampling designs. The dependence between primary and secondary phenotypes is modelled via copulas. Thus, SPAC is a robust method for non-normality assumptiom of the secondary trait; improved power is possible by appropriate modelling of the primary-secondary phenotypes joint distribution via copula models.
+SPAC is an R package that contains methods to perform genetic association of a quantitative secondary phenotype and a single SNP in presence of selection bias. SPAC is a unified copula-based framework  fits both retrospective and prospective likelihoods to handel selection bias under case-control (CC), extreme-trait (ET) and multiple-trait (MT) sampling designs. The dependence between primary and secondary phenotypes is modelled via copulas. Thus, SPAC is a robust method for non-normality assumption of the secondary trait; improved power is possible by appropriate modelling of the primary-secondary phenotypes joint distribution via copula models.
 
 The main user-visible function of the package is |SPAC()| function which can be used to
 analyse single-SNP/Secondary phenotype association in one go.
@@ -74,7 +74,7 @@ The main function allows for prospective and retrospective copula-based likeliho
   \item retros, retrospective copula-based likelihood
   \end{itemize}
 
-Of note, the retrospective method does not handle covariates while the prosepecetive-based method controls for covariates. The retrospective-based method, \emph{method="retros"}, is the computationally fastest method, and these $p$-values can be used to triage which SNPs of the genome should be re-analyzed with \emph{method="pros"}.
+Of note, the retrospective method does not handle covariates while the prospective-based method controls for covariates. The retrospective-based method, \emph{method="retros"}, is the computationally fastest method, and these $p$-values can be used to triage which SNPs of the genome should be re-analyzed with \emph{method="pros"}.
 
 
 SPAC allows also for primary-secondary dependence modelling using five copulas
@@ -90,9 +90,13 @@ SPAC allows also for primary-secondary dependence modelling using five copulas
 In order to run any of the examples below, the package needs to be installed and loaded first, of course:
 <<load.pkg>>=
 library(devtools)
-devtools::install_github('KarimOualkacha/SPAC', build_vignettes = TRUE)
-devtools::load_all()
+#devtools::install_github('micau80/SPAC', ref = "micau80-patch-1", dep =FALSE)
+                         #build_vignettes = TRUE, dep =FALSE)
+devtools::install_github('micau80/SPAC', dep =FALSE)
+
+
 library(SPAC)
+
 @
 
 \section{Loading the input data}
@@ -104,14 +108,12 @@ the following data needs to be present\footnote{The example code in
   package, that is why the \lstinline{package} argument to the
   \lstinline{system.file()} function is used.}:
 \begin{itemize}
-\item \emph{Phenotype data}; primary and secondary phenpotypes data should be present separatly in the form of
+\item \emph{Phenotype data}; primary and secondary phenpotypes data should be present separately in the form of
   an R vector (one value for each individual). It is up to you (as user)
   to create the vector, for example by reading it from a CSV file using R's
   |read.csv()| function or like this:
 <<load.pheno>>=
-  data <- system.file("data","data.RData",
-                            package="SPAC")
-  load(data)
+  data(data, package = "SPAC")
 # data is .RData file contains 3 examples of data sets for CC, ET and MT designs
 # y1cc: primary trait under the case-control (CC) design
   head(y1cc)
@@ -122,9 +124,7 @@ the following data needs to be present\footnote{The example code in
   of a matrix. Like the phenotype data it us up to you to load this
   data. For example:
 <<load.covar>>=
-  data <- system.file("data","data.RData",
-                            package="SPAC")
-  load(data)
+  data(data, package = "SPAC")
 # data.file is .RData file contains 3 examples of data sets for CC, ET and MT designs
 # matrix of two confounders/covariates: one dichotmous and one continuous covariate
   dim(cov.matCC)
@@ -133,9 +133,7 @@ the following data needs to be present\footnote{The example code in
 \item \emph{Genotype data}; SNP genotype data can be in the form of
   an R vector (one value for each individual).
 <<set.genofile>>=
-  data <- system.file("data", "data.RData",
-                         package="SPAC")
-  load(data)
+  data(data, package = "SPAC")
 # data is .RData file contains 3 examples of data sets for CC, ET and MT designs
 # SNP data for the CC design: a vector of legnth
   length(markerCC)
@@ -165,13 +163,13 @@ SNPresults
 @
 
 \begin{itemize}
-\item Here the |prev| is a scalar between 0 and 1, specifies the primary phenotype prevalance.
-It is needed for the |method = "prosp"| and |Design = "CC"| or |Design = "MT"|. Default is |prev = NULL|.
-If it is not specified, it will be estimated form the data.
+\item Here the |prev| is a scalar between 0 and 1, specifies the primary phenotype prevalence.
+It is needed for the |method = "pros"| and |Design = "CC"| or |Design = "MT"|.
 
-\item The |link| is a character specifies the link function to be used for modelling the marginal distribution of the binary primary phenotype for the CC and MT designs. The available link functions are |link=c("probit","logit","cloglog")|. The defaut is |link = "probit"|, which th liabiltiy latent model.
 
-\item The |copfit| is a character that selects the copula model to use for modelling priamry-secondary phenptypes dependence. Can be one of the following:
+\item The |link| is a character, specifies the link function to be used for modelling the marginal distribution of the binary primary phenotype for the CC and MT designs. The available link functions are |link=c("probit","logit","cloglog")|. The defaut is |link = "probit"|, which the liability latent model.
+
+\item The |copfit| is a character that selects the copula model to use for modelling primary-secondary phenptypes dependence. Can be one of the following:
 \begin{itemize}
 \item |copfit = "Gaussian"|, (default)
 \item |copfit = "Student"|, Student copula with degree of freedom equals 10
@@ -193,22 +191,31 @@ SNPresults.ET <- SPAC(y1 = y1et,
                    copfit = "Gaussian",
                    method = "pros",
                    Design = "ET",
-                   cutoffs = c(-1.498953,2.174215)
+                   cutoffs = c(-1.498953,2.174215),
+                   p.lu =c(0.1,0.1)
                    )
 SNPresults.ET
 @
 
-The |cutoffs| is a vector or scalar, depending on the sampling mechanism design |Design = "ET"| or  |Design = "MT"|. For the ET design the |cutoffs| is a $2\times 1$ vector, |cutoffs = c(ylb,yub)|, with
+
+
+\begin{itemize}
+\item The |cutoffs| is a vector or scalar, depending on the sampling mechanism design |Design = "ET"| or  |Design = "MT"|. For the ET design the |cutoffs| is a $2\times 1$ vector, |cutoffs = c(ylb,yub)|, with
 \begin{itemize}
 \item ylb is the lower primary trait threshold
 \item yub is the upper primary trait threshold
 \end{itemize}
 
-Of note, the ET design does not need a |link| argument since it fits a liability thresohold model for the primary phenotype.
+\item The |p.lu| is a vector specifying the proportion of individuals with lower and upper extreme primary trait. It is needed for the |method = "pros"| and |Design = "ET"|.
+
+\end{itemize}
+
+
+Of note, the ET design does not need a |link| argument since it fits a liability threshold model for the primary phenotype.
 
 \subsection{Using SPAC for an multiple-trait (MT) design}
 \label{sec:using-SPAC-MT}
-The next code run SPAC for a single-SNP/secondary phenotype association test under the MT design. Here we use |method = "Clayton"| as a copula model to model the joint distribution of the primary-secondary phenotypes:
+The next code run SPAC for a single-SNP/secondary phenotype association test under the MT design. Here we use |copfit = "Clayton"| as a copula model to model the joint distribution of the primary-secondary phenotypes:
 <<>>=
 SNPresults.MT <- SPAC(y1 = y1mt,
                    y2 = y2mt,
@@ -219,11 +226,21 @@ SNPresults.MT <- SPAC(y1 = y1mt,
                    method = "pros",
                    Design = "MT",
                    cutoffs = 1.865465,
-                   prev = 0.1)
+                   prev = 0.1,
+                   prev2 =0.06112)
 SNPresults.MT
 @
 
-In the MT design, the |cutoffs| is a scalar, |cutoffs = y2ub|, with |y2ub| is the upper secondary trait threshold
+
+\begin{itemize}
+
+\item In the MT design, the |cutoffs| is a scalar, |cutoffs = y2ub|, with |y2ub| is the upper secondary trait threshold
+
+\item The |prev2| is a scalar between 0 and 1, specifies the proportion of diseased individuals with secondary trait exceeding the threshold |y2ub|.
+ It is needed for the |method ="pros"| and |Design = "MT"|.
+
+
+\end{itemize}
 
 \begin{thebibliography}{99}
 \bibitem{Tounkara2019} Fod\'e Tounkara, Genevi\`eve Lefebvre, Celia MT Greenwood and Karim Oualkacha (2019). \emph{A flexible copula-based approach for the analysis of secondary phenotypes in ascertained samples}. Statistics in Medicine. 1-32. Under revision.

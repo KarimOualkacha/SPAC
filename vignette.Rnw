@@ -92,7 +92,7 @@ In order to run any of the examples below, the package needs to be installed and
 library(devtools)
 #devtools::install_github('micau80/SPAC', ref = "micau80-patch-1", dep =FALSE)
                          #build_vignettes = TRUE, dep =FALSE)
-devtools::install_github('micau80/SPAC', dep =FALSE)
+devtools::install_github('KarimOualkacha/SPAC', dep =FALSE)
 
 
 library(SPAC)
